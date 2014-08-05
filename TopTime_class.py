@@ -21,26 +21,22 @@ def sanitize(time_string):      # to Format all splitter to '.'
 #         return (none)
 
 
-class Athlete:                  # Creating a Class with 3 attributes
+class AthleteList(list):                  # Creating Class and List-Subclass to inherit BIFs on List
     def __init__(self, a_name, a_dob =None, a_times =[]):
+        list.__init__([])
         self.name=a_name
         self.dob= a_dob
-        self.times =a_times
+        self.extend(a_times)                # inherit BIF on list, instead of implicity adding new methods
+
     def top3(self):                # the function is definded within the class, and applied to the class directly
-        return(sorted(set([sanitize(t) for t in self.times]))[0:3])
-    def add_time(self, time_value):     # takes a single element and append it to list self.times
-        self.times.append(time_value)
-    def add_times(self, list_of_times):     # takes a list of element and concatenate the list with list - self.times
-        self.times.extend(list_of_times)
-
-
+        return(sorted(set([sanitize(t) for t in self]))[0:3])
 
 def get_coach_data(filename):       # Return Class
     try:
         with open(filename) as f:
             data = f.readline()
             temp = data.strip().split(',')
-            return(Athlete(temp.pop(0), temp.pop(0), temp))         # Sort the elements before assigning to the Keys
+            return(AthleteList(temp.pop(0), temp.pop(0), temp))         # Sort the elements before assigning to the Keys
     except IOError as ioerr:
         print('File error: ' + str(ioerr))
         return(None)
